@@ -1,4 +1,3 @@
-import java.io.ObjectOutputStream;
 import java.util.Objects;
 
 public class Task {
@@ -33,7 +32,7 @@ public class Task {
     }
 
     @Override
-    public boolean equals(Object obj){
+    public boolean equals(Object obj) {
         if(this == obj) return true;
         if(obj == null) return false;
         if(this.getClass() != obj.getClass()) return false;
@@ -44,7 +43,7 @@ public class Task {
     }
 
     @Override
-    public String toString(){
+    public String toString() {
         return "Task{" +
                 "name='" + name + '\'' +
                 ", description='" + description + '\'' +

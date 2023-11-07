@@ -12,7 +12,7 @@ public class Epic extends Task{
 
     public void cleanSubtaskId(){subtaskId.clear();}
 
-    public void removeSubtaskId(int id){
+    public void removeSubtaskId(int id) {
         for(int i = 0; i < subtaskId.size(); i++){
             if (subtaskId.get(i) == id){
                 subtaskId.remove(i);
@@ -21,7 +21,7 @@ public class Epic extends Task{
     }
 
     @Override
-    public String toString(){
+    public String toString() {
         return "Epic{" +
                 "name='" + name + '\'' +
                 ", description=" + description + '\'' +

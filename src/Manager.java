@@ -1,7 +1,4 @@
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.Objects;
-import java.util.Set;
+import java.util.*;
 
 public class Manager {
 
@@ -80,6 +77,7 @@ public class Manager {
        subtasks.put(id, subtask);
        Epic epic = getEpic(subtask.getEpicId());
        epic.addSubtaskId(id);
+       updateEpicStatus(epic);
        return id;
    }
 
@@ -93,6 +91,7 @@ public class Manager {
 
    public void updateSubtask(Subtask subtask){
        subtasks.put(subtask.getId(), subtask);
+       updateEpicStatus(epics.get(subtask.getEpicId()));
    }
 
    public void removeTask(int id){
@@ -112,6 +111,7 @@ public class Manager {
        Epic epic = getEpic(subtask.getEpicId());
        epic.removeSubtaskId(id);
        subtasks.remove(id);
+       updateEpicStatus(epic);
    }
 
    public ArrayList<Subtask> getSubtasksEpic(int id){
@@ -122,8 +122,20 @@ public class Manager {
        return subtasksEpic;
    }
 
-    public void test(){
-
-       System.out.println("Done");
+   public void updateEpicStatus(Epic epic){
+       Set<String> subtasksEpic = new HashSet<>();
+       for(Integer i : epic.subtaskId){
+          subtasksEpic.add(subtasks.get(i).status);
+       }
+       if (subtasksEpic == null || subtasksEpic.contains("NEW") == true
+               && subtasksEpic.contains("IN_PROGRESS") == false
+               && subtasksEpic.contains("DONE") == false){
+           epic.setStatus("NEW");
+       } else if (subtasksEpic.contains("NEW") == false && subtasksEpic.contains("IN_PROGRESS") == false
+               && subtasksEpic.contains("DONE") == true) {
+           epic.setStatus("DONE");
+       } else {
+           epic.setStatus("IN_PROGRESS");
+       }
    }
 }
