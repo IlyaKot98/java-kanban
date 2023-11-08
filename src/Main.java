@@ -1,13 +1,15 @@
-import java.util.ArrayList;
-import java.util.HashMap;
+import tasks.Epic;
+import tasks.Subtask;
+import tasks.Task;
+
 public class Main {
 
     public static void main(String[] args) {
 
         Manager manager = new Manager();
 
-        Task task1 = new Task("Task_1","Task 1 description",  "NEW");
-        Task task2 = new Task("Task_2", "Task 2 description", "IN_PROGRESS");
+        Task task1 = new Task("Task_1","tasks.Task 1 description",  "NEW");
+        Task task2 = new Task("Task_2", "tasks.Task 2 description", "IN_PROGRESS");
         int taskId1 = manager.addNewTask(task1);
         int taskId2 = manager.addNewTask(task2);
 
@@ -36,6 +38,8 @@ public class Main {
         int subtaskId4 = manager.addNewSubtask(subtask4);
         int subtaskId5 = manager.addNewSubtask(subtask5);
         int subtaskId6 = manager.addNewSubtask(subtask6);
+
+        System.out.println(manager.getSubtasksEpic(epicId1));
 
     }
 }

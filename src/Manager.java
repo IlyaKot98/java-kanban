@@ -1,26 +1,27 @@
+import tasks.Epic;
+import tasks.Subtask;
+import tasks.Task;
+
 import java.util.*;
 
 public class Manager {
 
-    HashMap <Integer, Epic> epics = new HashMap<>();
-    HashMap <Integer, Subtask> subtasks = new HashMap();
-    HashMap <Integer, Task> tasks = new HashMap();
-    int generatorId = 0;
+    private HashMap <Integer, Epic> epics = new HashMap<>();
+    private HashMap <Integer, Subtask> subtasks = new HashMap();
+    private HashMap <Integer, Task> tasks = new HashMap();
+    private int generatorId = 0;
 
 
    public ArrayList<Task> getListAllTask(){
-       ArrayList<Task> listAllTask = new ArrayList<>(tasks.values());
-       return listAllTask;
+       return new ArrayList<>(tasks.values());
    }
 
    public ArrayList<Epic> getListAllEpic(){
-       ArrayList<Epic> listAllEpic = new ArrayList<>(epics.values());
-       return listAllEpic;
+       return new ArrayList<>(epics.values());
    }
 
    public ArrayList<Subtask> getListAllSubtask(){
-       ArrayList<Subtask> listAllSubtask = new ArrayList<>(subtasks.values());
-       return listAllSubtask;
+       return new ArrayList<>(subtasks.values());
    }
 
    public Task getTask(int id){
@@ -40,12 +41,7 @@ public class Manager {
    }
 
    public void clearAllEpic(){
-       for (Epic epic : epics.values()){
-           ArrayList <Integer> subtuskId = epic.subtaskId;
-           for(int i = 0; i < subtuskId.size(); i++) {
-               subtasks.remove(subtuskId.get(i));
-           }
-       }
+       subtasks.clear();
        epics.clear();
    }
 
@@ -99,7 +95,7 @@ public class Manager {
    }
 
    public void removeEpic(int id){
-       ArrayList<Integer> subtaskId = epics.get(id).subtaskId;
+       ArrayList<Integer> subtaskId = epics.get(id).getSubtaskId();
        for(int i = 0; i < subtaskId.size(); i++){
            subtasks.remove(subtaskId.get(i));
        }
@@ -116,7 +112,7 @@ public class Manager {
 
    public ArrayList<Subtask> getSubtasksEpic(int id){
        ArrayList<Subtask> subtasksEpic = new ArrayList<>();
-       for (Integer i : epics.get(id).subtaskId){
+       for (Integer i : epics.get(id).getSubtaskId()){
            subtasksEpic.add(subtasks.get(i));
        }
        return subtasksEpic;
@@ -124,15 +120,15 @@ public class Manager {
 
    public void updateEpicStatus(Epic epic){
        Set<String> subtasksEpic = new HashSet<>();
-       for(Integer i : epic.subtaskId){
-          subtasksEpic.add(subtasks.get(i).status);
+       for(Integer i : epic.getSubtaskId()){
+           subtasksEpic.add(subtasks.get(i).getStatus());
        }
-       if (subtasksEpic == null || subtasksEpic.contains("NEW") == true
-               && subtasksEpic.contains("IN_PROGRESS") == false
-               && subtasksEpic.contains("DONE") == false){
+       if (subtasksEpic == null || subtasksEpic.contains("NEW")
+               && !subtasksEpic.contains("IN_PROGRESS")
+               && !subtasksEpic.contains("DONE")){
            epic.setStatus("NEW");
-       } else if (subtasksEpic.contains("NEW") == false && subtasksEpic.contains("IN_PROGRESS") == false
-               && subtasksEpic.contains("DONE") == true) {
+       } else if (!subtasksEpic.contains("NEW") && !subtasksEpic.contains("IN_PROGRESS")
+               && subtasksEpic.contains("DONE")) {
            epic.setStatus("DONE");
        } else {
            epic.setStatus("IN_PROGRESS");
