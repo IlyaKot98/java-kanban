@@ -11,7 +11,6 @@ public class Manager {
     private HashMap <Integer, Task> tasks = new HashMap();
     private int generatorId = 0;
 
-
    public ArrayList<Task> getListAllTask(){
        return new ArrayList<>(tasks.values());
    }
@@ -49,6 +48,7 @@ public class Manager {
        for (Subtask subtask : subtasks.values()){
            Epic epic = getEpic(subtask.getEpicId());
            epic.cleanSubtaskId();
+           updateEpicStatus(epic);
        }
        subtasks.clear();
    }
@@ -123,7 +123,8 @@ public class Manager {
        for(Integer i : epic.getSubtaskId()){
            subtasksEpic.add(subtasks.get(i).getStatus());
        }
-       if (subtasksEpic == null || subtasksEpic.contains("NEW")
+       if (subtasksEpic == null || subtasksEpic.isEmpty()
+               || subtasksEpic.contains("NEW")
                && !subtasksEpic.contains("IN_PROGRESS")
                && !subtasksEpic.contains("DONE")){
            epic.setStatus("NEW");

@@ -13,24 +13,24 @@ public class Main {
         int taskId1 = manager.addNewTask(task1);
         int taskId2 = manager.addNewTask(task2);
 
-        Epic epic1 = new Epic("Домашние дела","Описание задачи домашние дела");
-        Epic epic2 = new Epic("Отдых", "Описание задачи для отдыха");
-        Epic epic3 = new Epic("Работа", "Описание задачи для работы");
+        Epic epic1 = new Epic("Epic_1","epic.Epic 1 description");
+        Epic epic2 = new Epic("Epic_2", "epic.Epic 2 description");
+        Epic epic3 = new Epic("Epic_3", "epic.Epic 3 description");
         int epicId1 = manager.addNewEpic(epic1);
         int epicId2 = manager.addNewEpic(epic2);
         int epicId3 = manager.addNewEpic(epic3);
 
-        Subtask subtask1 = new Subtask("Сходить в магазин","Описание задачи магазин",
+        Subtask subtask1 = new Subtask("Subtask_1","subtask.Subtask 1 description",
                  epicId1);
-        Subtask subtask2 = new Subtask("Съездить на дачу","Описание задачи для дачи",
+        Subtask subtask2 = new Subtask("Subtask_2","subtask.Subtask 2 description",
                  epicId1);
-        Subtask subtask3 = new Subtask("Test_status_1","Описание задачи магазин",
+        Subtask subtask3 = new Subtask("Subtask_3","subtask.Subtask 3 description",
                  epicId1);
-        Subtask subtask4 = new Subtask("Test_status_2","Описание задачи магазин",
+        Subtask subtask4 = new Subtask("Subtask_4","subtask.Subtask 4 description",
                  epicId1);
-        Subtask subtask5 = new Subtask("Test_status_3","Описание задачи магазин",
+        Subtask subtask5 = new Subtask("Subtask_5","subtask.Subtask 5 description",
                  epicId1);
-        Subtask subtask6 = new Subtask("Приготовить шашлык","Описание задачи шашлыка",
+        Subtask subtask6 = new Subtask("Subtask_6","subtask.Subtask 6 description",
                  epicId2);
         int subtaskId1 = manager.addNewSubtask(subtask1);
         int subtaskId2 = manager.addNewSubtask(subtask2);
