@@ -2,15 +2,15 @@ package tasks;
 
 import java.util.Objects;
 
-public class Task {
+public class Task{
     protected String name;
     protected String description;
     protected int id;
-    protected String status;
-    public Task(String name, String description){
+    protected TaskStatus status;
+    public Task(String name, String description, TaskStatus status){
         this.name = name;
         this.description = description;
-        this.status = "NEW";
+        this.status = status;
     }
 
     public int getId(){
@@ -21,11 +21,15 @@ public class Task {
         this.id = id;
     }
 
-    public String getStatus(){
+    public String getName() {
+        return name;
+    }
+
+    public TaskStatus getStatus(){
         return status;
     }
 
-    public void setStatus(String status) {
+    public void setStatus(TaskStatus status) {
         this.status = status;
     }
 
