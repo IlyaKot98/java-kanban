@@ -9,11 +9,11 @@ import java.util.List;
 import java.util.TreeSet;
 
 public interface TaskManager {
-    ArrayList<Task> getTask();
+    List<Task> getTasks();
 
-    ArrayList<Epic> getEpic();
+    List<Epic> getEpics();
 
-    ArrayList<Subtask> getSubtask();
+    List<Subtask> getSubtasks();
 
     Task getTask(int id);
 

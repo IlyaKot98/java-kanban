@@ -43,11 +43,11 @@ public class Main {
         int subtaskId6 = manager.addNewSubtask(subtask6);
 
         System.out.println("Список задач:");
-        System.out.println(manager.getTask());
+        System.out.println(manager.getTasks());
         System.out.println("Список эпиков:");
-        System.out.println(manager.getEpic());
+        System.out.println(manager.getEpics());
         System.out.println("Список подзадач:");
-        System.out.println(manager.getSubtask());
+        System.out.println(manager.getSubtasks());
 
         System.out.println("История просмотренных задач:");
         for (int i = 0; i < manager.getHistory().size(); i++) {
@@ -58,7 +58,7 @@ public class Main {
         Task task = manager.getTask(taskId1);
         task.setStatus(TaskStatus.IN_PROGRESS);
         manager.updateTask(task);
-        System.out.println(manager.getTask());
+        System.out.println(manager.getTasks());
 
         System.out.println("История просмотренных задач:");
         for (int i = 0; i < manager.getHistory().size(); i++) {
@@ -69,8 +69,8 @@ public class Main {
         Subtask subtask = manager.getSubtask(subtaskId2);
         subtask.setStatus(TaskStatus.IN_PROGRESS);
         manager.updateSubtask(subtask);
-        System.out.println(manager.getEpic());
-        System.out.println(manager.getSubtask());
+        System.out.println(manager.getEpics());
+        System.out.println(manager.getSubtasks());
 
         System.out.println("История просмотренных задач:");
         for (int i = 0; i < manager.getHistory().size(); i++) {
@@ -98,10 +98,10 @@ public class Main {
 
         System.out.println("Удаление эпика:");
         manager.removeEpic(epicId1);
-        System.out.println(manager.getEpic());
+        System.out.println(manager.getEpics());
 
         System.out.println("Удаление задачи:");
         manager.removeTask(taskId2);
-        System.out.println(manager.getTask());
+        System.out.println(manager.getTasks());
     }
 }
