@@ -1,24 +1,85 @@
 package manager;
 
 import tasks.Task;
-
 import java.util.ArrayList;
-import java.util.List;
+import java.util.HashMap;
+import java.util.Map;
+
 
 public class InMemoryHistoryManager implements HistoryManager{
 
-    private List<Task> history = new ArrayList<>();
+    private static class Node {
+        Task task;
+        Node prev;
+        Node next;
 
-    @Override
-    public List<Task> getHistory(){
-        return history;
+        private Node (Node prev, Task task, Node next) {
+            this.prev = prev;
+            this.task = task;
+            this.next = next;
+        }
+    }
+
+    private final Map<Integer, Node> nodeMap = new HashMap<>();
+    private Node first = null;
+    private Node last = null;
+
+
+
+    private ArrayList<Task> getTasks() {
+        ArrayList<Task> tasksResult = new ArrayList<>();
+        Node node = first;
+        while (node != null) {
+            tasksResult.add(node.task);
+            node = node.next;
+        }
+        return tasksResult;
+    }
+
+     private void linkLast(Task task) {
+        final Node l = last;
+        final Node newNode = new Node(l, task, null);
+        last = newNode;
+        if (l == null)
+            first = newNode;
+        else
+            l.next = newNode;
+
+        removeNode(newNode);
+        nodeMap.put(task.getId(), newNode);
     }
 
     @Override
-    public void addTask(Task task){
-        if(history.size() >= 10){
-            history.remove(0);
+    public ArrayList<Task> getHistory(){
+        return getTasks();
+    }
+
+    @Override
+    public void addTask(Task task) {
+        linkLast(task);
+    }
+
+    private void removeNode(Node node) {
+        final Node nodeRem = nodeMap.remove(node.task.getId());
+        if (nodeRem == null) {
+            return;
         }
-            history.add(task);
+
+        if (nodeRem.prev == null && nodeRem.next != null) {
+            first = nodeRem.next;
+            nodeRem.next.prev = null;
+        } else if (nodeRem.prev != null && nodeRem.next != null) {
+            nodeRem.prev.next = nodeRem.next;
+            nodeRem.next.prev = nodeRem.prev;
+        } else if (nodeRem.prev != null && nodeRem.next == null) {
+            last = nodeRem.prev;
+            last.next = null;
+        }
+    }
+
+    @Override
+    public void remove(int id) {
+        Node node = nodeMap.get(id);
+        removeNode(node);
     }
 }
