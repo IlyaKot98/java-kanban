@@ -3,8 +3,8 @@ package manager;
 import tasks.Task;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
-
 
 public class InMemoryHistoryManager implements HistoryManager{
 
@@ -24,10 +24,24 @@ public class InMemoryHistoryManager implements HistoryManager{
     private Node first = null;
     private Node last = null;
 
+    @Override
+    public List<Task> getHistory(){
+        return getTasks();
+    }
 
+    @Override
+    public void addTask(Task task) {
+        linkLast(task);
+    }
 
-    private ArrayList<Task> getTasks() {
-        ArrayList<Task> tasksResult = new ArrayList<>();
+    @Override
+    public void remove(int id) {
+        Node node = nodeMap.get(id);
+        removeNode(node);
+    }
+
+    private List<Task> getTasks() {
+        List<Task> tasksResult = new ArrayList<>();
         Node node = first;
         while (node != null) {
             tasksResult.add(node.task);
@@ -36,7 +50,7 @@ public class InMemoryHistoryManager implements HistoryManager{
         return tasksResult;
     }
 
-     private void linkLast(Task task) {
+    private void linkLast(Task task) {
         final Node l = last;
         final Node newNode = new Node(l, task, null);
         last = newNode;
@@ -47,16 +61,6 @@ public class InMemoryHistoryManager implements HistoryManager{
 
         removeNode(newNode);
         nodeMap.put(task.getId(), newNode);
-    }
-
-    @Override
-    public ArrayList<Task> getHistory(){
-        return getTasks();
-    }
-
-    @Override
-    public void addTask(Task task) {
-        linkLast(task);
     }
 
     private void removeNode(Node node) {
@@ -75,11 +79,5 @@ public class InMemoryHistoryManager implements HistoryManager{
             last = nodeRem.prev;
             last.next = null;
         }
-    }
-
-    @Override
-    public void remove(int id) {
-        Node node = nodeMap.get(id);
-        removeNode(node);
     }
 }

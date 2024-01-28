@@ -3,10 +3,7 @@ package manager;
 import tasks.Epic;
 import tasks.Subtask;
 import tasks.Task;
-
-import java.util.ArrayList;
 import java.util.List;
-import java.util.TreeSet;
 
 public interface TaskManager {
     List<Task> getTasks();
@@ -45,7 +42,7 @@ public interface TaskManager {
 
     void removeSubtask(int id);
 
-    ArrayList<Subtask> getSubtasksEpic(int id);
+    List<Subtask> getSubtasksEpic(int id);
 
     void updateEpicStatus(Epic epic);
 
