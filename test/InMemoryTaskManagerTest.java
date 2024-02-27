@@ -76,7 +76,6 @@ class InMemoryTaskManagerTest {
 
     @Test
     void taskEqualsTask() {
-
         Assertions.assertNotNull(idNewTask, "Отсутствует id созданной задачи");
         Assertions.assertEquals(task, manager.getTask(idNewTask), "Задачи не равны между собой!");
     }
