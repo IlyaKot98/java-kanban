@@ -6,20 +6,21 @@ import tasks.Epic;
 import tasks.Subtask;
 import tasks.Task;
 import tasks.TaskStatus;
-
 import java.util.List;
 
 class InMemoryTaskManagerTest {
 
     TaskManager manager = Managers.getDefault();
-    Epic epic = new Epic("Epic_1","epic.Epic 1 description", TaskStatus.NEW);
     Task task = new Task("TestTask_1", "Test_Task_1_Description", TaskStatus.NEW);
-    Subtask subtask = new Subtask("Subtask_1","subtask.Subtask 1 description", epic.getId(), TaskStatus.NEW);
-
+    int idNewTask = manager.addNewTask(task);
+    Epic epic = new Epic("Epic_1","epic.Epic 1 description", TaskStatus.NEW);
+    int idNewEpic = manager.addNewEpic(epic);
+    Subtask subtask = new Subtask("Subtask_1","subtask.Subtask 1 description", epic.getId(),
+            TaskStatus.NEW);
+    int idNewSubtask = manager.addNewSubtask(subtask);
 
     @Test
     void addNewTask() {
-        int idNewTask = manager.addNewTask(task);
         final Task savedTask = manager.getTask(idNewTask);
 
         Assertions.assertNotNull(savedTask, "Задача не найдена!");
@@ -34,7 +35,6 @@ class InMemoryTaskManagerTest {
 
     @Test
     void addNewSubtask() {
-        int idNewSubtask = manager.addNewSubtask(subtask);
         final Subtask savedSubtask = manager.getSubtask(idNewSubtask);
 
         Assertions.assertNotNull(savedSubtask, "Подзадача не найдена!");
@@ -49,7 +49,6 @@ class InMemoryTaskManagerTest {
 
     @Test
     void addNewEpic() {
-        int idNewEpic = manager.addNewEpic(epic);
         final Epic savedEpic = manager.getEpic(idNewEpic);
 
         Assertions.assertNotNull(savedEpic, "Подзадача не найдена!");
@@ -59,57 +58,52 @@ class InMemoryTaskManagerTest {
 
         Assertions.assertNotNull(epic, "Подзадачи не загружены!");
         Assertions.assertEquals(1, epics.size(), "Неверное количество подзадач!");
-        Assertions.assertEquals(subtask, epics.get(0), "Подзадачи не совпадают!");
+        Assertions.assertEquals(epic, epics.get(0), "Подзадачи не совпадают!");
     }
 
     @Test
-    void removeTask() {
-        int idNewTask = manager.addNewTask(task);
-        final Task savedTask = manager.getTask(idNewTask);
+    void returnHistory() {
+        manager.getTask(task.getId());
+        manager.getSubtask(subtask.getId());
+        manager.getEpic(epic.getId());
 
-        Assertions.assertNotNull(savedTask, "Задача не найдена!");
-        Assertions.assertEquals(task, savedTask, "Задачи не совпадают!");
+        List<Task> history = manager.getHistory();
 
-        final List<Task> tasksOld = manager.getTasks();
-        manager.removeTask(idNewTask);
-        final List<Task> tasksNew = manager.getTasks();
-
-        Assertions.assertNotNull(tasksOld, "Список задач не загружен!");
-        Assertions.assertNull(manager.getTask(idNewTask), "Задача не удалена!");
-        Assertions.assertEquals(tasksOld.size() - 1, tasksNew, "Одинаковое количество задач в списке!");
+        Assertions.assertNotNull(history, "История не загружена!");
+        Assertions.assertEquals(3, history.size(),
+                "Количество записей в истории, не совпадает с количеством задач!");
     }
 
     @Test
-    void removeEpic() {
-        int idNewEpic = manager.addNewEpic(epic);
-        final Epic savedEpic = manager.getEpic(idNewEpic);
+    void taskEqualsTask() {
 
-        Assertions.assertNotNull(savedEpic, "Эпик не найден!");
-        Assertions.assertEquals(epic, savedEpic, "Эпики не совпадают!");
-
-        final List<Epic> epicsOld = manager.getEpics();
-        manager.removeEpic(idNewEpic);
-        final List<Epic> epicsNew = manager.getEpics();
-
-        Assertions.assertNotNull(epicsOld, "Список эпикв не загружен!");
-        Assertions.assertNull(manager.getEpic(idNewEpic), "Эпик не удален!");
-        Assertions.assertEquals(epicsOld.size() - 1, epicsNew, "Одинаковое количество эпиков в списке!");
+        Assertions.assertNotNull(idNewTask, "Отсутствует id созданной задачи");
+        Assertions.assertEquals(task, manager.getTask(idNewTask), "Задачи не равны между собой!");
     }
 
     @Test
-    void removeSubtask() {
-        int idNewSubtask = manager.addNewSubtask(subtask);
-        final Subtask savedSubtask = manager.getSubtask(idNewSubtask);
+    void heirsTaskEqualsTask() {
+        Assertions.assertNotNull(idNewEpic, "Отсутствует id созданного эпика");
+        Assertions.assertNotNull(idNewSubtask, "Отсутствует id созданной подзадачи");
+        Assertions.assertEquals(epic, manager.getEpic(idNewEpic), "Эпики не равны между собой!");
+        Assertions.assertEquals(subtask, manager.getSubtask(idNewSubtask), "Подзадачи не равны между собой!");
+    }
 
-        Assertions.assertNotNull(savedSubtask, "Эпик не найден!");
-        Assertions.assertEquals(subtask, savedSubtask, "Эпики не совпадают!");
+    @Test
+    void epicIntoYourself() {
+        manager.getEpic(idNewEpic).addSubtaskId(idNewEpic);
 
-        final List<Subtask> subtasksOld = manager.getSubtasks();
-        manager.removeEpic(idNewSubtask);
-        final List<Subtask> subtasksNew = manager.getSubtasks();
+        Assertions.assertNotNull(idNewEpic, "Отсутствует id созданного эпика");
 
-        Assertions.assertNotNull(subtasksOld, "Список эпикв не загружен!");
-        Assertions.assertNull(manager.getEpic(idNewSubtask), "Эпик не удален!");
-        Assertions.assertEquals(subtasksOld.size() - 1, subtasksNew, "Одинаковое количество эпиков в списке!");
+        List<Integer> subtaskEpic = manager.getEpic(idNewEpic).getSubtaskId();
+        Assertions.assertTrue(!subtaskEpic.contains(idNewEpic), "Эпик добавлен как подзадача самому себе!");
+
+    }
+
+    @Test
+    void InMemoryTaskManagerAddTaskDifferentTypeAndFindThemById() {
+        Assertions.assertNotNull(manager.getTask(idNewTask), "Задача не найдена!");
+        Assertions.assertNotNull(manager.getEpic(idNewEpic), "Эпик не найден!");
+        Assertions.assertNotNull(manager.getSubtask(idNewSubtask), "Подзадача не найдена!");
     }
 }
