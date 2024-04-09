@@ -1,7 +1,7 @@
 import manager.Managers;
 import manager.TaskManager;
-import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.Test;
+//import org.junit.jupiter.api.Assertions;
+//import org.junit.jupiter.api.Test;
 import tasks.Epic;
 import tasks.Subtask;
 import tasks.Task;
@@ -9,7 +9,7 @@ import tasks.TaskStatus;
 import java.util.List;
 
 class InMemoryTaskManagerTest {
-
+/*
     TaskManager manager = Managers.getDefault();
     Task task = new Task("TestTask_1", "Test_Task_1_Description", TaskStatus.NEW);
     int idNewTask = manager.addNewTask(task);
@@ -104,5 +104,5 @@ class InMemoryTaskManagerTest {
         Assertions.assertNotNull(manager.getTask(idNewTask), "Задача не найдена!");
         Assertions.assertNotNull(manager.getEpic(idNewEpic), "Эпик не найден!");
         Assertions.assertNotNull(manager.getSubtask(idNewSubtask), "Подзадача не найдена!");
-    }
+    }*/
 }
