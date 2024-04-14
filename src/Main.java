@@ -12,12 +12,14 @@ public class Main {
 
     public static void main(String[] args) throws IOException {
 
-        TaskManager manager = Managers.getDefault();
+        FileBackedTaskManager manager = Managers.getDefaultFile();
 
         Task task1 = new Task("Task_1","tasks.Task 1 description", TaskStatus.NEW);
         Task task2 = new Task("Task_2", "tasks.Task 2 description", TaskStatus.NEW);
         int taskId1 = manager.addNewTask(task1);
         int taskId2 = manager.addNewTask(task2);
+
+
 
         Epic epic1 = new Epic("Epic_1","epic.Epic 1 description", TaskStatus.NEW);
         Epic epic2 = new Epic("Epic_2", "epic.Epic 2 description", TaskStatus.NEW);
@@ -67,6 +69,7 @@ public class Main {
             System.out.println(manager.getHistory().get(i));
         }
 
+
         manager.getTask(taskId2);
         manager.getEpic(epicId2);
         manager.getTask(taskId1);
@@ -89,19 +92,13 @@ public class Main {
             System.out.println(manager.getHistory().get(i));
         }
 
-        manager.removeTask(taskId1);
-        manager.removeSubtask(subtaskId1);
+        System.out.println();
+        manager.loadFromFile();
 
         System.out.println("История просмотренных задач:");
         for (int i = 0; i < manager.getHistory().size(); i++) {
             System.out.println(manager.getHistory().get(i));
         }
 
-        manager.removeEpic(epicId1);
-
-        System.out.println("История просмотренных задач:");
-        for (int i = 0; i < manager.getHistory().size(); i++) {
-            System.out.println(manager.getHistory().get(i));
-        }
     }
 }

@@ -3,6 +3,8 @@ package manager;
 import tasks.Epic;
 import tasks.Subtask;
 import tasks.Task;
+
+import java.io.IOException;
 import java.util.List;
 
 public interface TaskManager {
@@ -12,17 +14,17 @@ public interface TaskManager {
 
     List<Subtask> getSubtasks();
 
-    Task getTask(int id);
+    Task getTask(int id) throws IOException;
 
-    Epic getEpic(int id);
+    Epic getEpic(int id) throws IOException;
 
-    Subtask getSubtask(int id);
+    Subtask getSubtask(int id) throws IOException;
 
     void clearAllTask();
 
-    void clearAllEpic();
+    void clearAllEpic() throws IOException;
 
-    void clearAllSubtask();
+    void clearAllSubtask() throws IOException;
 
     int addNewTask(Task task);
 
@@ -36,11 +38,11 @@ public interface TaskManager {
 
     void updateSubtask(Subtask subtask);
 
-    void removeTask(int id);
+    void removeTask(int id) throws IOException;
 
-    void removeEpic(int id);
+    void removeEpic(int id) throws IOException;
 
-    void removeSubtask(int id);
+    void removeSubtask(int id) throws IOException;
 
     List<Subtask> getSubtasksEpic(int id);
 
