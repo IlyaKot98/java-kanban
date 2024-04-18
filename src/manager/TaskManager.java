@@ -14,17 +14,17 @@ public interface TaskManager {
 
     List<Subtask> getSubtasks();
 
-    Task getTask(int id) throws IOException;
+    Task getTask(int id);
 
-    Epic getEpic(int id) throws IOException;
+    Epic getEpic(int id);
 
-    Subtask getSubtask(int id) throws IOException;
+    Subtask getSubtask(int id);
 
     void clearAllTask();
 
-    void clearAllEpic() throws IOException;
+    void clearAllEpic();
 
-    void clearAllSubtask() throws IOException;
+    void clearAllSubtask();
 
     int addNewTask(Task task);
 
@@ -38,11 +38,11 @@ public interface TaskManager {
 
     void updateSubtask(Subtask subtask);
 
-    void removeTask(int id) throws IOException;
+    void removeTask(int id);
 
-    void removeEpic(int id) throws IOException;
+    void removeEpic(int id);
 
-    void removeSubtask(int id) throws IOException;
+    void removeSubtask(int id);
 
     List<Subtask> getSubtasksEpic(int id);
 
