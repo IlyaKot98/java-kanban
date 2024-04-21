@@ -21,13 +21,17 @@ public class Main {
             }
         }
 
-        FileBackedTaskManager manager = FileBackedTaskManager.loadFromFile(file);
+        FileBackedTaskManager managerOrig = FileBackedTaskManager.loadFromFile(file);
 
         Task task1 = new Task("Task_1","tasks.Task 1 description", TaskStatus.NEW);
-        int taskId1 = manager.addNewTask(task1);
+        int taskId1 = managerOrig.addNewTask(task1);
+        Task task2 = new Task("Task_2", "tasks.Task 2 description", TaskStatus.IN_PROGRESS);
+        int taskId2 = managerOrig.addNewTask(task2);
 
         Epic epic1 = new Epic("Epic_1","epic.Epic 1 description", TaskStatus.NEW);
-        int epicId1 = manager.addNewEpic(epic1);
+        int epicId1 = managerOrig.addNewEpic(epic1);
+        Epic epic2 = new Epic("Epic_2", "epic.Epic 2 description", TaskStatus.NEW);
+        int epicId2 = managerOrig.addNewEpic(epic2);
 
         Subtask subtask1 = new Subtask("Subtask_1","subtask.Subtask 1 description",
                 epicId1, TaskStatus.NEW);
@@ -35,13 +39,27 @@ public class Main {
                 epicId1, TaskStatus.NEW);
         Subtask subtask3 = new Subtask("Subtask_3","subtask.Subtask 3 description",
                 epicId1, TaskStatus.NEW);
-        int subtaskId1 = manager.addNewSubtask(subtask1);
-        int subtaskId2 = manager.addNewSubtask(subtask2);
-        int subtaskId3 = manager.addNewSubtask(subtask3);
+        int subtaskId1 = managerOrig.addNewSubtask(subtask1);
+        int subtaskId2 = managerOrig.addNewSubtask(subtask2);
+        int subtaskId3 = managerOrig.addNewSubtask(subtask3);
 
-        manager.getEpic(epicId1);
-        manager.getSubtask(subtaskId2);
-        manager.getTask(taskId1);
-        manager.getSubtask(subtaskId3);
+        managerOrig.getEpic(epicId1);
+        managerOrig.getSubtask(subtaskId2);
+        managerOrig.getTask(taskId1);
+        managerOrig.getSubtask(subtaskId3);
+        managerOrig.getTask(taskId2);
+        managerOrig.getSubtask(subtaskId1);
+        managerOrig.getEpic(epicId2);
+        managerOrig.getEpic(epicId1);
+
+        FileBackedTaskManager managerNew = FileBackedTaskManager.loadFromFile(file);
+
+        String strOld = managerOrig.getHistory().toString();
+        String srtNew = managerNew.getHistory().toString();
+
+        System.out.println("История равна: " + strOld.equals(srtNew));
+        System.out.println("Задачи равны: " + managerOrig.getTasks().toString().equals(managerNew.getTasks().toString()));
+        System.out.println("Эпики равны: " + managerOrig.getEpics().toString().equals(managerNew.getEpics().toString()));
+        System.out.println("Подзадачт равны: " + managerOrig.getSubtasks().toString().equals(managerNew.getSubtasks().toString()));
     }
 }
