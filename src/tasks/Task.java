@@ -58,13 +58,27 @@ public class Task{
 
     @Override
     public boolean equals(Object obj) {
-        if(this == obj) return true;
-        if(obj == null) return false;
-        if(this.getClass() != obj.getClass()) return false;
+        if (this == obj) return true;
+        if (obj == null) return false;
+        if (this.getClass() != obj.getClass()) return false;
         Task task = (Task) obj;
-        return Objects.equals(name, task.name) &&
+        return id == task.id &&
+                Objects.equals(name, task.name) &&
                 Objects.equals(description, task.description) &&
-                Objects.equals(status, task.status);
+                Objects.equals(status, task.status) &&
+                Objects.equals(taskType, task.taskType);
+    }
+
+    @Override
+    public int hashCode() {
+        final int total = 31;
+        int result = 1;
+        result = result * total + id;
+        result = result * total + ((name == null) ? 0 : name.hashCode());
+        result = result * total + ((description == null) ? 0 : description.hashCode());
+        result = result * total + ((status == null) ? 0 : status.hashCode());
+        result = result * total + ((taskType == null) ? 0 : taskType.hashCode());
+        return result;
     }
 
     @Override

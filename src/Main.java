@@ -54,12 +54,9 @@ public class Main {
 
         FileBackedTaskManager managerNew = FileBackedTaskManager.loadFromFile(file);
 
-        String strOld = managerOrig.getHistory().toString();
-        String srtNew = managerNew.getHistory().toString();
-
-        System.out.println("История равна: " + strOld.equals(srtNew));
-        System.out.println("Задачи равны: " + managerOrig.getTasks().toString().equals(managerNew.getTasks().toString()));
-        System.out.println("Эпики равны: " + managerOrig.getEpics().toString().equals(managerNew.getEpics().toString()));
-        System.out.println("Подзадачт равны: " + managerOrig.getSubtasks().toString().equals(managerNew.getSubtasks().toString()));
+        System.out.println("История равна: " + managerOrig.getHistory().equals(managerNew.getHistory()));
+        System.out.println("Задачи равны: " + managerOrig.getTasks().equals(managerNew.getTasks()));
+        System.out.println("Эпики равны: " + managerOrig.getEpics().equals(managerNew.getEpics()));
+        System.out.println("Подзадачт равны: " + managerOrig.getSubtasks().equals(managerNew.getSubtasks()));
     }
 }
