@@ -3,13 +3,14 @@ package tasks;
 import tasks.Task;
 
 import java.util.ArrayList;
+import java.util.Objects;
 
 public class Epic extends Task {
 
     protected ArrayList<Integer> subtaskId = new ArrayList<>();
 
     public Epic(String name, String description, TaskStatus status) {
-        super(name, description, status);
+        super(name, description, status, TaskType.EPIC);
     }
 
     public void addSubtaskId(int id) {
@@ -30,6 +31,24 @@ public class Epic extends Task {
 
     public ArrayList<Integer> getSubtaskId(){
         return subtaskId;
+    }
+
+    @Override
+    public boolean equals(Object object) {
+        if (this == object) return true;
+        if (object == null || getClass() != object.getClass()) return false;
+        if (!super.equals(object)) return false;
+        Epic epic = (Epic) object;
+        return Objects.equals(subtaskId, epic.subtaskId);
+    }
+
+    @Override
+    public int hashCode() {
+        final int total = 31;
+        int result = 1;
+        result = result * total + super.hashCode();
+        result = result * total + ((subtaskId == null) ? 0 : subtaskId.hashCode());
+        return result;
     }
 
     @Override
