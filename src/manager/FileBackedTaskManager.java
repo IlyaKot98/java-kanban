@@ -23,7 +23,7 @@ public class FileBackedTaskManager extends InMemoryTaskManager {
             try (FileWriter fileWriter = new FileWriter(file, StandardCharsets.UTF_8, false)) {
                 String str = FormatterUtil.historyToString(historyManager);
                 if (!str.isEmpty()) {
-                    fileWriter.write("id,type,name,status,description,epic\n");
+                    fileWriter.write("id,type,name,status,description,epic,startTime,duration,endTime\n");
                     fileWriter.write(str);
                 }
             } catch (IOException e) {

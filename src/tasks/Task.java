@@ -1,5 +1,7 @@
 package tasks;
 
+import java.time.Duration;
+import java.time.LocalDateTime;
 import java.util.Objects;
 
 public class Task{
@@ -8,18 +10,33 @@ public class Task{
     protected int id;
     protected TaskStatus status;
     protected TaskType taskType;
-    public Task(String name, String description, TaskStatus status, TaskType taskType){
+    protected LocalDateTime startTime;
+    protected Duration duration;
+
+    public Task(String name, String description, TaskStatus status, TaskType taskType, LocalDateTime startTime, Duration duration){
         this.name = name;
         this.description = description;
         this.status = status;
         this.taskType = taskType;
+        this.startTime = startTime;
+        this.duration = duration;
     }
 
-    public Task(String name, String description, TaskStatus status) {
+    public Task(String name, String description, TaskStatus status, LocalDateTime startTime, Duration duration) {
         this.name = name;
         this.description = description;
         this.status = status;
         taskType = TaskType.TASK;
+        this.startTime = startTime;
+        this.duration = duration;
+    }
+
+    public Task(String name, String description, TaskStatus status, Duration duration) {
+        this.name = name;
+        this.description = description;
+        this.status = status;
+        taskType = TaskType.TASK;
+        this.duration = duration;
     }
 
     public int getId(){
@@ -55,6 +72,18 @@ public class Task{
     public void setName(String name) {
         this.name = name;
     }
+
+    public LocalDateTime getEndTime() {
+        return startTime.plusMinutes(duration.toMinutes());
+    }
+
+    public LocalDateTime getStartTime() {return startTime;}
+
+    public void setStartTime(LocalDateTime startTime) {this.startTime = startTime;}
+
+    public Duration getDuration() {return duration;}
+
+    public void setDuration(Duration duration) {this.duration = duration;}
 
     @Override
     public boolean equals(Object obj) {

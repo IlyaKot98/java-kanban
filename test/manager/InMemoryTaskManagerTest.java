@@ -6,17 +6,21 @@ import tasks.Epic;
 import tasks.Subtask;
 import tasks.Task;
 import tasks.TaskStatus;
+
+import java.time.Duration;
+import java.time.LocalDateTime;
 import java.util.List;
 
 class InMemoryTaskManagerTest {
 
     TaskManager manager = Managers.getDefault();
-    Task task = new Task("TestTask_1", "Test_Task_1_Description", TaskStatus.NEW);
+    Task task = new Task("Task_1","tasks.Task 1 description", TaskStatus.NEW,
+            LocalDateTime.now().minusYears(3), Duration.ofMinutes(15));
     int idNewTask = manager.addNewTask(task);
     Epic epic = new Epic("Epic_1","epic.Epic 1 description", TaskStatus.NEW);
     int idNewEpic = manager.addNewEpic(epic);
-    Subtask subtask = new Subtask("Subtask_1","subtask.Subtask 1 description", epic.getId(),
-            TaskStatus.NEW);
+    Subtask subtask =  new Subtask("Subtask_1","subtask.Subtask 1 description",
+            idNewEpic, TaskStatus.NEW, LocalDateTime.now().minusMinutes(100), Duration.ofMinutes(15));
     int idNewSubtask = manager.addNewSubtask(subtask);
 
     @Test

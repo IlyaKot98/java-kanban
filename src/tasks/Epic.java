@@ -2,15 +2,20 @@ package tasks;
 
 import tasks.Task;
 
+import java.time.Duration;
+import java.time.LocalDateTime;
+import java.time.ZoneId;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.Objects;
 
 public class Epic extends Task {
 
     protected ArrayList<Integer> subtaskId = new ArrayList<>();
+    protected LocalDateTime endTime = LocalDateTime.now();
 
     public Epic(String name, String description, TaskStatus status) {
-        super(name, description, status, TaskType.EPIC);
+        super(name, description, status, TaskType.EPIC, LocalDateTime.now(), Duration.ofMinutes(0));
     }
 
     public void addSubtaskId(int id) {
@@ -32,6 +37,10 @@ public class Epic extends Task {
     public ArrayList<Integer> getSubtaskId(){
         return subtaskId;
     }
+
+    public void setEndTime(LocalDateTime endTime) {this.endTime = endTime;}
+
+    public LocalDateTime getEndTime() {return endTime;}
 
     @Override
     public boolean equals(Object object) {

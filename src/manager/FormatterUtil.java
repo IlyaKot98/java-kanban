@@ -2,11 +2,16 @@ package manager;
 
 import tasks.*;
 
+import java.time.Duration;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
 public final class FormatterUtil {
+
+    private static final DateTimeFormatter DATE_TIME_FORMATTER = DateTimeFormatter.ofPattern("dd.MM.yy HH:mm");
 
     private FormatterUtil() {}
 
@@ -19,6 +24,8 @@ public final class FormatterUtil {
         } else {
             sb.append(task.getTaskType());
         }
+        sb.append("," + task.getStartTime().format(DATE_TIME_FORMATTER) + "," + task.getDuration().toMinutes() + "," +
+                task.getEndTime().format(DATE_TIME_FORMATTER));
         sb.append("\n");
 
         return sb.toString();
@@ -28,13 +35,15 @@ public final class FormatterUtil {
         String[] values = value.split(",");
         Task task;
         if(TaskType.SUBTASK.toString().equals(values[1])) {
-            task = new Subtask(values[2], values[4], Integer.parseInt(values[5]), TaskStatus.valueOf(values[3]));
+            task = new Subtask(values[2], values[4], Integer.parseInt(values[5]), TaskStatus.valueOf(values[3]),
+                    LocalDateTime.parse(values[6], DATE_TIME_FORMATTER), Duration.ofMinutes(Long.parseLong(values[7])));
             task.setId(Integer.parseInt(values[0]));
         } else if(TaskType.EPIC.toString().equals(values[1])) {
             task = new Epic(values[2], values[4], TaskStatus.valueOf(values[3]));
             task.setId(Integer.parseInt(values[0]));
         } else {
-            task = new Task(values[2], values[4], TaskStatus.valueOf(values[3]));
+            task = new Task(values[2], values[4], TaskStatus.valueOf(values[3]),
+                    LocalDateTime.parse(values[6], DATE_TIME_FORMATTER), Duration.ofMinutes(Long.parseLong(values[7])));
             task.setId(Integer.parseInt(values[0]));
         }
         return task;
