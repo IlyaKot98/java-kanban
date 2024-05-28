@@ -10,6 +10,7 @@ import java.time.Duration;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.*;
+import java.util.stream.Collectors;
 
 public class InMemoryTaskManager implements TaskManager {
 
@@ -83,7 +84,7 @@ public class InMemoryTaskManager implements TaskManager {
        boolean taskIntersects = getPrioritizedTasks().stream().anyMatch(taskInStream -> ifTasksIntersects(taskInStream, task));
        try {
            if (taskIntersects) {
-               throw new createException("Задача пересекается по времени с другими!");
+               throw new CreateException("Задача пересекается по времени с другими!");
            } else {
                final int id = ++generatorId;
                task.setId(id);
@@ -91,7 +92,7 @@ public class InMemoryTaskManager implements TaskManager {
                updatePrioritizedTasks(task);
                return id;
            }
-       } catch (createException e) {
+       } catch (CreateException e) {
            System.out.println(e.getMessage() + " " + task);
        }
        return 0;
@@ -110,7 +111,7 @@ public class InMemoryTaskManager implements TaskManager {
        boolean taskIntersects = getPrioritizedTasks().stream().anyMatch(taskInStream -> ifTasksIntersects(taskInStream, subtask));
        try {
            if (taskIntersects) {
-               throw new createException("Задача пересекается по времени с другими!");
+               throw new CreateException("Задача пересекается по времени с другими!");
            } else {
                final int id = ++generatorId;
                subtask.setId(id);
@@ -124,7 +125,7 @@ public class InMemoryTaskManager implements TaskManager {
                updatePrioritizedTasks(subtask);
                return id;
            }
-       } catch (createException e) {
+       } catch (CreateException e) {
            System.out.println(e.getMessage() + " " + subtask);
        }
        return 0;
@@ -207,10 +208,9 @@ public class InMemoryTaskManager implements TaskManager {
    }
 
    public void updateEpicTimeStart(Epic epic) {
-       Set<LocalDateTime> subtaskStartTime = new HashSet<>();
-       for (Integer i : epic.getSubtaskId()) {
-           subtaskStartTime.add(subtasks.get(i).getStartTime());
-       }
+       Set<LocalDateTime> subtaskStartTime = epic.getSubtaskId().stream()
+               .map(startTime -> subtasks.get(startTime).getStartTime()).collect(Collectors.toSet());
+
        for (LocalDateTime localDateTime : subtaskStartTime) {
            if (localDateTime.isBefore(epic.getStartTime())) {
                epic.setStartTime(localDateTime);
