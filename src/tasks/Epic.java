@@ -15,7 +15,7 @@ public class Epic extends Task {
     protected LocalDateTime endTime = LocalDateTime.now();
 
     public Epic(String name, String description, TaskStatus status) {
-        super(name, description, status, TaskType.EPIC, LocalDateTime.now(), Duration.ofMinutes(0));
+        super(name, description, status, TaskType.EPIC);
     }
 
     public void addSubtaskId(int id) {

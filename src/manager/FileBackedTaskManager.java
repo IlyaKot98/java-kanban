@@ -46,9 +46,6 @@ public class FileBackedTaskManager extends InMemoryTaskManager {
             tasks.add(FormatterUtil.fromString(line));
         }
 
-        Comparator<Task> comparator = new TaskTypeComparator();
-        tasks.sort(comparator);
-
         for (Task task : tasks) {
             int idNew;
             if (task.getTaskType().toString().equals(TaskType.TASK.toString())) {
@@ -116,19 +113,4 @@ public class FileBackedTaskManager extends InMemoryTaskManager {
         super.removeSubtask(id);
         save();
     }
-}
-
-class TaskTypeComparator implements Comparator<Task> {
-
-    @Override
-    public int compare(Task t1, Task t2) {
-        if (t1.getId() > t2.getId()) {
-            return 1;
-        } else if (t1.getId() < t2.getId()) {
-            return -1;
-        } else {
-            return 0;
-        }
-    }
-
 }

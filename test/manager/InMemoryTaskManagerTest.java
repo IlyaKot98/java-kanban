@@ -108,5 +108,6 @@ class InMemoryTaskManagerTest {
         Assertions.assertNotNull(manager.getTask(idNewTask), "Задача не найдена!");
         Assertions.assertNotNull(manager.getEpic(idNewEpic), "Эпик не найден!");
         Assertions.assertNotNull(manager.getSubtask(idNewSubtask), "Подзадача не найдена!");
+        Assertions.assertDoesNotThrow();
     }
 }

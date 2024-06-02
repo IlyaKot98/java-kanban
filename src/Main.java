@@ -66,6 +66,7 @@ public class Main {
         System.out.println("Эпики равны: " + managerOrig.getEpics().equals(managerNew.getEpics()));
         System.out.println("Подзадачи равны: " + managerOrig.getSubtasks().equals(managerNew.getSubtasks()));
 
+        /*
         System.out.println("Статус эпика, когда все подзадачи New: " + epic1.getStatus());
         subtask1.setStatus(TaskStatus.IN_PROGRESS);
         managerOrig.updateSubtask(subtask1);
@@ -78,7 +79,7 @@ public class Main {
         subtask3.setStatus(TaskStatus.DONE);
         managerOrig.updateSubtask(subtask3);
         System.out.println("Статус эпика, когда все подзадачи DONE: " + epic1.getStatus());
-
+*/
 
     }
 }
