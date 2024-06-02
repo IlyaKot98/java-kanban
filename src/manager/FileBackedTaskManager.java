@@ -23,7 +23,7 @@ public class FileBackedTaskManager extends InMemoryTaskManager {
             try (FileWriter fileWriter = new FileWriter(file, StandardCharsets.UTF_8, false)) {
                 String str = FormatterUtil.historyToString(historyManager);
                 if (!str.isEmpty()) {
-                    fileWriter.write("id,type,name,status,description,epic\n");
+                    fileWriter.write("id,type,name,status,description,epic,startTime,duration,endTime\n");
                     fileWriter.write(str);
                 }
             } catch (IOException e) {
@@ -45,9 +45,6 @@ public class FileBackedTaskManager extends InMemoryTaskManager {
         for (String line : lines) {
             tasks.add(FormatterUtil.fromString(line));
         }
-
-        Comparator<Task> comparator = new TaskTypeComparator();
-        tasks.sort(comparator);
 
         for (Task task : tasks) {
             int idNew;
@@ -116,19 +113,4 @@ public class FileBackedTaskManager extends InMemoryTaskManager {
         super.removeSubtask(id);
         save();
     }
-}
-
-class TaskTypeComparator implements Comparator<Task> {
-
-    @Override
-    public int compare(Task t1, Task t2) {
-        if (t1.getId() > t2.getId()) {
-            return 1;
-        } else if (t1.getId() < t2.getId()) {
-            return -1;
-        } else {
-            return 0;
-        }
-    }
-
 }
