@@ -15,10 +15,16 @@ public class Epic extends Task {
     protected LocalDateTime endTime = LocalDateTime.now();
 
     public Epic(String name, String description, TaskStatus status) {
-        super(name, description, status, TaskType.EPIC);
+        super(name, description, status, TaskType.EPIC, LocalDateTime.now(), Duration.ofDays(0));
     }
 
     public void addSubtaskId(int id) {
+        for (Integer idSubtask : subtaskId) {
+            if (idSubtask == id) {
+                return;
+            }
+        }
+
         if (id != this.getId()) {
             subtaskId.add(id);
         }

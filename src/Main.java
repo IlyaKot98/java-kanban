@@ -79,7 +79,7 @@ public class Main {
         subtask3.setStatus(TaskStatus.DONE);
         managerOrig.updateSubtask(subtask3);
         System.out.println("Статус эпика, когда все подзадачи DONE: " + epic1.getStatus());
-*/
 
+*/
     }
 }
