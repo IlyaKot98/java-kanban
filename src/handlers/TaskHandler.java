@@ -16,7 +16,7 @@ import java.time.Duration;
 import java.time.LocalDateTime;
 import java.util.Optional;
 
-public class TaskHandler extends BaseHttpHandler implements HttpHandler{
+public class TaskHandler extends BaseHttpHandler implements HttpHandler {
     private static final Charset DEFAULT_CHARSET = StandardCharsets.UTF_8;
 
     private FileBackedTaskManager manager;
@@ -137,7 +137,7 @@ public class TaskHandler extends BaseHttpHandler implements HttpHandler{
                 return Endpoint.GET_EPICS_ID;
             }
             if (requestMethod.equals("POST")) {
-                return Endpoint.POST_TASKS_ID;
+                return Endpoint.POST_EPICS_ID;
             }
             if (requestMethod.equals("DELETE")) {
                 return Endpoint.DELETE_EPICS_ID;

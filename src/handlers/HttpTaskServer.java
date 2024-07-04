@@ -1,42 +1,26 @@
-import com.sun.net.httpserver.HttpServer;
-import handlers.TaskHandler;
-import handlers.UserHandler;
-import manager.FileBackedTaskManager;
-import tasks.Epic;
-import tasks.TaskStatus;
+package handlers;
 
-import java.io.File;
+import com.sun.net.httpserver.HttpServer;
+import manager.FileBackedTaskManager;
+
 import java.io.IOException;
 import java.net.InetSocketAddress;
-import java.nio.file.Files;
 
 public class HttpTaskServer {
 
     FileBackedTaskManager manager;
     private static final int PORT = 8080;
+    HttpServer httpServer = HttpServer.create();
 
-    public HttpTaskServer (FileBackedTaskManager manager) {
+    public HttpTaskServer (FileBackedTaskManager manager) throws IOException {
         this.manager = manager;
     }
 
-    public static void main(String[] args) throws IOException {
+    public static void main(String[] args) {
 
-        File file = new File( "test.csv");
-        if(!Files.exists(file.toPath())){
-            try {
-                Files.createFile(file.toPath());
-            } catch (IOException e) {
-                throw new RuntimeException(e);
-            }
-        }
-
-        HttpTaskServer httpTaskServer = new HttpTaskServer(FileBackedTaskManager.loadFromFile(file));
-
-        httpTaskServer.start();
     }
 
     void start () throws IOException {
-        HttpServer httpServer = HttpServer.create();
         httpServer.bind(new InetSocketAddress(8080), 0);
 
         TaskHandler taskHandler = new TaskHandler(manager);
@@ -47,9 +31,14 @@ public class HttpTaskServer {
         httpServer.createContext("/epics", taskHandler);
         httpServer.createContext("/history", userHandler);
         httpServer.createContext("/prioritized", userHandler);
-        httpServer.start();
 
+        httpServer.start();
         System.out.println("HTTP-сервер запущен на " + PORT + " порту!");
+    }
+
+    void stop() {
+        httpServer.stop(10);
+        System.out.println("HTTP-сервер остановлен на " + PORT + " порту!");
     }
 }
 
