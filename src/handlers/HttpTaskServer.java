@@ -8,19 +8,17 @@ import java.net.InetSocketAddress;
 
 public class HttpTaskServer {
 
-    FileBackedTaskManager manager;
+    private FileBackedTaskManager manager;
     private static final int PORT = 8080;
-    HttpServer httpServer = HttpServer.create();
+    private HttpServer httpServer = HttpServer.create();
 
     public HttpTaskServer (FileBackedTaskManager manager) throws IOException {
         this.manager = manager;
     }
 
-    public static void main(String[] args) {
+    public static void main(String[] args) {}
 
-    }
-
-    void start () throws IOException {
+    public void start () throws IOException {
         httpServer.bind(new InetSocketAddress(8080), 0);
 
         TaskHandler taskHandler = new TaskHandler(manager);
@@ -36,7 +34,7 @@ public class HttpTaskServer {
         System.out.println("HTTP-сервер запущен на " + PORT + " порту!");
     }
 
-    void stop() {
+    public void stop() {
         httpServer.stop(10);
         System.out.println("HTTP-сервер остановлен на " + PORT + " порту!");
     }

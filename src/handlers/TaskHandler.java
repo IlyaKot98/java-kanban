@@ -4,7 +4,7 @@ import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.sun.net.httpserver.HttpExchange;
 import com.sun.net.httpserver.HttpHandler;
-import manager.CreateException;
+import exception.CreateException;
 import manager.FileBackedTaskManager;
 import tasks.*;
 
@@ -21,7 +21,7 @@ public class TaskHandler extends BaseHttpHandler implements HttpHandler {
 
     private FileBackedTaskManager manager;
 
-    Gson gson = new GsonBuilder()
+    private Gson gson = new GsonBuilder()
             .setPrettyPrinting()
             .registerTypeAdapter(LocalDateTime.class, new LocalTimeAdapter())
             .registerTypeAdapter(Duration.class, new DurationAdapter())
@@ -212,7 +212,7 @@ public class TaskHandler extends BaseHttpHandler implements HttpHandler {
     }
 
     private void handlePostTasksId (HttpExchange exchange) throws IOException {
-        InputStream inputStream = exchange.getRequestBody();
+         InputStream inputStream = exchange.getRequestBody();
         Task task = gson.fromJson(new String(inputStream.readAllBytes(), DEFAULT_CHARSET), Task.class);
 
         Optional<Integer> optIdTask = getId(exchange);

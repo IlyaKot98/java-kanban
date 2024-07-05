@@ -1,4 +1,4 @@
-package manager;
+package exception;
 
 public class CreateException extends Throwable{
     public CreateException(final String message) {
