@@ -1,12 +1,11 @@
 package manager;
 
+import exception.CreateException;
 import tasks.Epic;
 import tasks.Subtask;
 import tasks.Task;
 import tasks.TaskStatus;
 
-import java.io.IOException;
-import java.time.Duration;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.*;
@@ -39,21 +38,21 @@ public class InMemoryTaskManager implements TaskManager {
    @Override
    public Task getTask(int id) {
        Task task = tasks.get(id);
-       historyManager.addTask(task);
-        return task;
+       if (task != null) historyManager.addTask(task);
+       return task;
    }
 
    @Override
    public Epic getEpic(int id) {
        Epic epic = epics.get(id);
-       historyManager.addTask(epic);
+       if (epic != null) historyManager.addTask(epic);
        return epic;
    }
 
-    @Override
-    public Subtask getSubtask(int id) {
+   @Override
+   public Subtask getSubtask(int id) {
         Subtask subtask = subtasks.get(id);
-        historyManager.addTask(subtask);
+        if (subtask != null) historyManager.addTask(subtask);
        return subtask;
     }
 
@@ -80,7 +79,7 @@ public class InMemoryTaskManager implements TaskManager {
    }
 
    @Override
-   public int addNewTask(Task task){
+   public int addNewTask(Task task) {
        boolean taskIntersects = getPrioritizedTasks().stream().anyMatch(taskInStream -> ifTasksIntersects(taskInStream, task));
        try {
            if (taskIntersects) {
@@ -93,9 +92,8 @@ public class InMemoryTaskManager implements TaskManager {
                return task.getId();
            }
        } catch (CreateException e) {
-           System.out.println(e.getMessage() + " " + task);
+           return 0;
        }
-       return 0;
    }
 
    @Override
@@ -136,25 +134,39 @@ public class InMemoryTaskManager implements TaskManager {
                return subtask.getId();
            }
        } catch (CreateException e) {
-           System.out.println(e.getMessage() + " " + subtask);
+           return 0;
        }
-       return 0;
    }
 
    @Override
-   public void updateTask(Task task){
-       tasks.put(task.getId(), task);
+   public void updateTask(Task task) throws CreateException {
+       boolean taskIntersects = getPrioritizedTasks().stream()
+               .filter(taskInStream -> taskInStream.getId() != task.getId())
+               .anyMatch(taskInStream -> ifTasksIntersects(taskInStream, task));
+       if (taskIntersects) {
+           throw new CreateException();
+       } else {
+           tasks.put(task.getId(), task);
+           updatePrioritizedTasks(task);
+       }
    }
 
    @Override
-   public void updateEpic(Epic epic){
+   public void updateEpic(Epic epic) {
        epics.put(epic.getId(), epic);
    }
 
    @Override
-   public void updateSubtask(Subtask subtask){
-       subtasks.put(subtask.getId(), subtask);
-       updateEpicStatus(epics.get(subtask.getEpicId()));
+   public void updateSubtask(Subtask subtask) throws CreateException {
+       boolean subtaskIntersects = getPrioritizedTasks().stream()
+               .filter(subtaskInStream -> subtaskInStream.getId() != subtask.getId())
+               .anyMatch(subtaskInStream -> ifTasksIntersects(subtaskInStream, subtask));
+       if (subtaskIntersects) {
+           throw new CreateException();
+       } else {
+           subtasks.put(subtask.getId(), subtask);
+           updateEpicStatus(epics.get(subtask.getEpicId()));
+       }
    }
 
    @Override

@@ -22,6 +22,15 @@ public class Task{
         this.duration = duration;
     }
 
+    public Task(String name, String description, TaskStatus status, TaskType taskType, LocalDateTime startTime){
+        this.name = name;
+        this.description = description;
+        this.status = status;
+        this.taskType = taskType;
+        this.startTime = startTime;
+        //this.duration = duration;
+    }
+
     public Task(String name, String description, TaskStatus status, TaskType taskType) {
         this.name = name;
         this.description = description;
@@ -123,6 +132,8 @@ public class Task{
                 "id=" + id + '\'' +
                 ", name='" + name + '\'' +
                 ", description='" + description + '\'' +
-                ", status=" + status + '}';
+                ", status=" + status + '\'' +
+                ", startTime=" + startTime + '\'' +
+                ", duration=" + duration + '}';
     }
 }
